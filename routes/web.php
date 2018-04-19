@@ -18,11 +18,15 @@ Route::get('/', 'StaticPagesController@home')->name('home');
 //这里改名 help 改为 faq
 //Route::get('/faq', 'StaticPagesController@help')->name('help');
 Route::get('/help', 'StaticPagesController@help')->name('help');
-Route::get('/about', 'StaticPagesController@about')->name('about');//关于
+Route::get('/about', 'StaticPagesController@about')->name('about');
+
+Route::get('/users/{user}', 'UsersController@show')->name('users.show');
 
 Route::get('signup', 'UsersController@create')->name('signup');
-Route::get('/users/{user}', 'UsersController@show')->name('users.show');
-Route::resource('users', 'UsersController');
-//Route::post('/users/store', 'UsersController@store')->name('users.store');
 
-Route::get('login','SessionsController@login')->name('login');
+Route::resource('users', 'UsersController');
+
+//登录
+Route::get('login','SessionsController@create')->name('login');
+Route::post('login','SessionsController@store')->name('login');
+Route::delete('logout','SessionsController@destroy')->name('logout');

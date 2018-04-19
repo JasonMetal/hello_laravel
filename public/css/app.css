@@ -8560,7 +8560,10 @@ footer .slogon {
 /* sidebar */
 
 aside section {
+<<<<<<< HEAD
   text-align: center;
+=======
+>>>>>>> de32cc7f1ce7afc339466722980dbbc7c22e8a21
   padding: 10px 0;
   margin-top: 20px;
 }
@@ -8618,4 +8621,14 @@ input {
 .panel {
   margin-top: 50px;
 }
+
+s
+#logout {
+  cursor: default;
+}
+
+#logout:hover {
+  background-color: transparent;
+}
+
 
