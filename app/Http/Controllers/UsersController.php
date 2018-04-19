@@ -5,14 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Models\User;
-
+use Auth;
 class UsersController extends Controller
 {
     //
     public function create(){
         return view('users.create');
     }
-
 //    public function show(){
 //        return view('users.show');
 //    }
@@ -31,18 +30,23 @@ class UsersController extends Controller
             'password' => 'required|confirmed|min:6'
         ]);
 
-
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
 
         ]);
-
+        //用户注册成功后自动登录
+        Auth::login($user);
         //如果需要获取用户输入的所有数据，可使用：
 //            $data = $request->all();
         session()->flash('success', '欢迎，您将在这里开启一段新的旅程~');
         return redirect()->route('users.show', [$user]);
+    }
 
+    public function destroy(){
+        Auth::logout();
+        session()->flash('success','您已成功退出！');
+        return redirect('login');
     }
 }

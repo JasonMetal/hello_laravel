@@ -16,6 +16,7 @@
 //});
 Route::get('/', 'StaticPagesController@home')->name('home');
 //这里改名 help 改为 faq
+
 //Route::get('/faq', 'StaticPagesController@help')->name('help');
 Route::get('/help', 'StaticPagesController@help')->name('help');
 Route::get('/about', 'StaticPagesController@about')->name('about');

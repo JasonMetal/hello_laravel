@@ -8452,7 +8452,6 @@ body {
 
 section {
   overflow: auto;
-  text-align: center;
 }
 
 textarea {
@@ -8560,10 +8559,6 @@ footer .slogon {
 /* sidebar */
 
 aside section {
-<<<<<<< HEAD
-  text-align: center;
-=======
->>>>>>> de32cc7f1ce7afc339466722980dbbc7c22e8a21
   padding: 10px 0;
   margin-top: 20px;
 }
@@ -8622,7 +8617,6 @@ input {
   margin-top: 50px;
 }
 
-s
 #logout {
   cursor: default;
 }
@@ -8630,5 +8624,4 @@ s
 #logout:hover {
   background-color: transparent;
 }
-
 
