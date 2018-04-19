@@ -6,15 +6,33 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Models\User;
 use Auth;
+
 class UsersController extends Controller
 {
-    //
-    public function create(){
+
+    public function __construct()
+    {
+        //中间件
+        //除了之外 （展示 创建  登录） index 动作来允许游客访问
+        $this->middleware('auth',[
+            'except'=>['show','create','store','index']
+        ]);
+
+    }
+
+    public function index(){
+        $users = User::all();
+        return view('users.index',compact('users'));
+    }
+
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function create()
+    {
         return view('users.create');
     }
-//    public function show(){
-//        return view('users.show');
-//    }
 
     public function show(User $user)
     {
@@ -44,9 +62,53 @@ class UsersController extends Controller
         return redirect()->route('users.show', [$user]);
     }
 
-    public function destroy(){
+    public function destroy()
+    {
         Auth::logout();
-        session()->flash('success','您已成功退出！');
+        session()->flash('success', '您已成功退出！');
         return redirect('login');
     }
+
+    /**
+     *用户编辑资料
+     *
+     */
+    public function edit(User $user)
+    {
+        //无权限运行该行为时会抛出 HttpException
+        $this->authorize('update',$user);
+        return view('users.edit', compact('user'));
+    }
+
+    /**用户更新资料
+     * @param User $user
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(User $user, Request $request)
+    {
+        //无权限运行该行为时会抛出 HttpException
+        $this->authorize('update',$user);
+
+        $this->validate($request, [
+            'name' => 'required|max:50',
+            'password' => 'required|confirmed|min:6'
+        ]);
+
+        $data = [];
+        $data['name'] = $request->name;
+        if ($request->password) {
+            $data['password'] = bcrypt($request->password);
+        }
+        $user->update($data);
+//        $user->update([
+//            'name'=>$request->name,
+//            'password'=>bcrypt($request->password),
+//        ]);
+        session()->flash('success', '个人资料更新成功！');
+
+        return redirect()->route('users.show', $user->id);
+    }
+
+
 }
