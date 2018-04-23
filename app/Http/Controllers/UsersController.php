@@ -21,7 +21,9 @@ class UsersController extends Controller
     }
 
     public function index(){
-        $users = User::all();
+//        $users = User::all();
+//        分页
+        $users = User::paginate(10);
         return view('users.index',compact('users'));
     }
 
@@ -62,12 +64,12 @@ class UsersController extends Controller
         return redirect()->route('users.show', [$user]);
     }
 
-    public function destroy()
-    {
-        Auth::logout();
-        session()->flash('success', '您已成功退出！');
-        return redirect('login');
-    }
+//    public function destroy()
+//    {
+//        Auth::logout();
+//        session()->flash('success', '您已成功退出！');
+//        return redirect('login');
+//    }
 
     /**
      *用户编辑资料
@@ -108,6 +110,14 @@ class UsersController extends Controller
         session()->flash('success', '个人资料更新成功！');
 
         return redirect()->route('users.show', $user->id);
+    }
+
+    public function destroy(User $user)
+    {
+        $this->authorize('destroy', $user);
+        $user->delete();
+        session()->flash('success', '成功删除用户！');
+        return back();
     }
 
 
