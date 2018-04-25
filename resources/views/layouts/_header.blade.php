@@ -13,6 +13,7 @@
                 <ul class="nav navbar-nav navbar-right">
                     {{--<li><a href="/help">帮助</a></li>--}}
                     {{--优化 --}}
+                    {{--优化 --}}
                     @if (Auth::check())
                         <li><a href="{{ route('users.index') }}">用户列表</a></li>
                         <li class="dropdown">
