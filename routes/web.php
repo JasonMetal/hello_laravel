@@ -34,3 +34,5 @@ Route::delete('logout','SessionsController@destroy')->name('logout');
 
 //编辑表单
 Route::get('/users/{user}/edit','UsersController@edit')->name('users.edit');
+
+
