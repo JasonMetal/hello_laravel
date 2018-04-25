@@ -4,12 +4,11 @@
             <a href="/" id="logo">Sample App</a>
             <nav>
                 <ul class="nav navbar-nav navbar-right">
-<<<<<<< HEAD
+
                     {{--<li><a href="/help">帮助</a></li>--}}
                     {{--优化 --}}
                     {{--优化 --}}
-=======
->>>>>>> 153985b029c28c0d760e54d03d545a8369817bde
+
                     @if (Auth::check())
                         <li><a href="{{ route('users.index') }}">用户列表</a></li>
                         <li class="dropdown">
