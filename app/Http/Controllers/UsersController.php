@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Models\User;
 use Auth;
-
+use Mail;
 class UsersController extends Controller
 {
 
@@ -14,10 +14,9 @@ class UsersController extends Controller
     {
         //中间件
         //除了之外 （展示 创建  登录） index 动作来允许游客访问
-        $this->middleware('auth',[
-            'except'=>['show','create','store','index']
+        $this->middleware('auth', [
+            'except' => ['show', 'create', 'store', 'index', 'confirmEmail']
         ]);
-
     }
 
     public function index(){
@@ -54,13 +53,43 @@ class UsersController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
-
         ]);
         //用户注册成功后自动登录
-        Auth::login($user);
+//        Auth::login($user);
         //如果需要获取用户输入的所有数据，可使用：
 //            $data = $request->all();
-        session()->flash('success', '欢迎，您将在这里开启一段新的旅程~');
+        $ret =  $this->sendEmailConfirmationTo($user);
+        print_r($ret);exit;
+//        print_r($ret);exit;
+        session()->flash('success', '验证邮件已发送到你的注册邮箱上，请注意查收。');
+        return redirect('/');
+//        return redirect()->route('users.show', [$user]);
+    }
+
+    public function sendEmailConfirmationTo($user)
+    {
+        $view = 'emails.confirm';
+        $data = compact('user');
+        $from = 'aufree@yousails.com';
+        $name = 'Aufree';
+        $to = $user->email;
+        $subject = "感谢注册 Sample 应用！请确认你的邮箱。";
+
+        Mail::send($view, $data, function ($message) use ($from, $name, $to, $subject) {
+            $message->from($from, $name)->to($to)->subject($subject);
+        });
+    }
+
+    public function confirmEmail($token)
+    {
+        $user = User::where('activation_token', $token)->firstOrFail();
+
+        $user->activated = true;
+        $user->activation_token = null;
+        $user->save();
+
+        Auth::login($user);
+        session()->flash('success', '恭喜你，激活成功！');
         return redirect()->route('users.show', [$user]);
     }
 
