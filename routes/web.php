@@ -37,7 +37,7 @@ Route::delete('logout','SessionsController@destroy')->name('logout');
 //Route::get('/users/{user}/edit','UsersController@edit')->name('users.edit');
 
 
-
+//激活账户
 Route::get('signup/confirm/{token}', 'UsersController@confirmEmail')->name('confirm_email');
 
 
