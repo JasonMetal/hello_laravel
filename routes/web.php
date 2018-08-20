@@ -27,6 +27,8 @@ Route::get('/users/{user}', 'UsersController@show')->name('users.show');
 Route::get('signup', 'UsersController@create')->name('signup');
 
 Route::resource('users', 'UsersController');
+//微博 创建与删除
+Route::resource('statuses', 'StatusesController',['only'=>['store','destroy']]);
 
 //登录
 Route::get('login','SessionsController@create')->name('login');

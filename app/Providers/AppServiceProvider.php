@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
+use Carbon\Carbon;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
         oo long; max key length is 1000 bytes (SQL: alter table `users` add unique
         `users_email_unique`(`email`))
          */
-
+//        Carbon::setLocale('en');
         Schema::defaultStringLength(191);
 
     }
